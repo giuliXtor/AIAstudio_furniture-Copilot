@@ -1,5 +1,6 @@
 from server.config import *
 import requests
+print(requests .__version__)
 from llm_calls import extract_activities
 import json
 
