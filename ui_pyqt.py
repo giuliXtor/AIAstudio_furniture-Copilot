@@ -21,11 +21,18 @@ class FlaskClientChatUI(QMainWindow):
         self.chat_display.setReadOnly(True)
         layout.addWidget(self.chat_display)
 
+        # Add welcome message
+        self.chat_display.append("<b>Assistant:</b> Welcome! Would you like some advice to furnish your living room? If you tell me about your daily routine, I can help you place the right furniture in the right place!")
+
         # Input and send button layout
         input_layout = QHBoxLayout()
 
         self.input_field = QLineEdit()
         self.input_field.setPlaceholderText("Type your message here...")
+        # self.input_field.setPlaceholderText(
+        # "Please enter a message...\nExample prompt: e.g. I work from 8am to 4pm then I sit and read my book at 6pm to 8pm and do yoga at 9pm and I sleep from 11pm until 7am"
+        # )
+
         input_layout.addWidget(self.input_field)
 
         self.send_button = QPushButton("Send")

@@ -49,7 +49,39 @@ if __name__ == '__main__':
 
     # Start PyQt application
     app = QApplication(sys.argv)
-    app.setStyleSheet("QWidget { font-size: 14px; }") 
+    # app.setStyleSheet("QWidget { font-size: 14px; }") 
+    app.setStyleSheet("""
+    QWidget {
+        background-color: #121212;
+        color: #FFFFFF;
+        font-size: 14px;
+        font-family: "Roboto Mono";
+    }
+    QLineEdit {
+        background-color: #1E1E1E;
+        color: #FFFFFF;
+        border: 1px solid #3A3A3A;
+        padding: 4px;
+        font-family: "Roboto Mono";
+    }
+    QTextBrowser {
+        background-color: #1E1E1E;
+        color: #FFFFFF;
+        border: 1px solid #3A3A3A;
+        font-family: "Roboto Mono";
+    }
+    QPushButton {
+        background-color: #2D2D2D;
+        color: #FFFFFF;
+        border: 1px solid #3A3A3A;
+        padding: 6px;
+        font-family: "Roboto Mono";
+    }
+    QPushButton:hover {
+        background-color: #3C3C3C;
+    }
+""")
+
     window = FlaskClientChatUI()
     window.show()
     sys.exit(app.exec_())
