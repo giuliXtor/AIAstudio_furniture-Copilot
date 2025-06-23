@@ -3,7 +3,7 @@ print (sys.version)
 import requests
 from llm_calls import *
 from PyQt5.QtWidgets import (
-    QMainWindow, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton, QTextBrowser, QHBoxLayout
+    QTextEdit, QMainWindow, QVBoxLayout, QWidget, QLabel, QLineEdit, QPushButton, QTextBrowser, QHBoxLayout
 )
 
 
@@ -27,11 +27,16 @@ class FlaskClientChatUI(QMainWindow):
         # Input and send button layout
         input_layout = QHBoxLayout()
 
-        self.input_field = QLineEdit()
-        self.input_field.setPlaceholderText("Type your message here...")
-        # self.input_field.setPlaceholderText(
-        # "Please enter a message...\nExample prompt: e.g. I work from 8am to 4pm then I sit and read my book at 6pm to 8pm and do yoga at 9pm and I sleep from 11pm until 7am"
-        # )
+        # multi lines input field for user messages
+        self.input_field = QTextEdit()
+        self.input_field.setPlaceholderText(
+        "Please enter a message...\ne.g. I work from 8am to 4pm, read 6–8pm, yoga at 9pm, sleep 11–7am"
+        )
+        self.input_field.setMaximumHeight(100)  # Limit height for better UI/about 4 lines with 14px height font
+        
+        # # single line input field for user messages
+        # self.input_field = QLineEdit()
+        # self.input_field.setPlaceholderText("Type your message here...")
 
         input_layout.addWidget(self.input_field)
 
@@ -47,7 +52,9 @@ class FlaskClientChatUI(QMainWindow):
         self.setCentralWidget(container)
 
     def send_message(self):
-        message = self.input_field.text().strip()
+        # message = self.input_field.text().strip() #to go to single line input field
+        message = self.input_field.toPlainText().strip() #to go to multi line input field
+
         if not message:
             self.chat_display.append("<span style='color: red;'>Please enter a message.</span>")
             return
