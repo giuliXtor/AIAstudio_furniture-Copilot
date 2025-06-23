@@ -141,6 +141,13 @@ class FlaskClientChatUI(QMainWindow):
         plot_widget.showGrid(x=True, y=True, alpha=0.3)
         plot_widget.addLegend(offset=(10, 10))
 
+        # Tick every hour (X axis)
+        plot_widget.getAxis("bottom").setTicks([[(h, str(h)) for h in range(25)]])
+
+        # Tick every 0.5 MET (Y axis)
+        y_ticks = [(y, f"{y:.1f}") for y in np.arange(0, 3.0, 0.5)]
+        plot_widget.getAxis("left").setTicks([y_ticks])
+
         for i, act in enumerate(unique_acts):
             mask = [a == act for a in activities]
             values = [m if msk else None for m, msk in zip(met_steps, mask + [mask[-1]])]
@@ -161,8 +168,7 @@ class FlaskClientChatUI(QMainWindow):
 
         layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
-
-        
+ 
         # except Exception as e:  # Uncomment this block to handle all exceptions
         #     self.chat_display.append("<span style='color: red;'>Error connecting to the server.</span>")
         #     print(f"Error: {e}")
