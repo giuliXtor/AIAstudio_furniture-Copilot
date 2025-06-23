@@ -34,13 +34,17 @@ To get started, clone this repository to your local machine:
 ```bash
 git clone https://github.com/your-username/AIAstudio_furniture-Copilot.git
 cd AIAstudio_furniture-Copilot
-```
 
-Then, install the required dependencies:
 
-```bash
-pip install -r requirements.txt
-```
+### install dependences in a virtual environment
+
+# Open your terminal folder
+# Create a virtual environment:  python -m venv llmUIstudio-env
+# Activate your virtual environment: run ".\gradio-env\Scripts\activate"
+
+# Then, install the required dependencies:
+# pip install -r requirements.txt
+# ```bash
 
 ### Configuration
 
