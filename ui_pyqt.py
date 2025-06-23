@@ -87,9 +87,9 @@ class FlaskClientChatUI(QMainWindow):
 
             # get activities and MET data from the response
             # ✅ NEW: Get activity + MET data
-            activity_data = response_data.get("activities")
-            met_rates = activity_data.get("hourly_metabolic_rates")
-            activity_labels = activity_data.get("hourly_activities")
+            activity_data = response_data.get("activities", {})
+            met_rates = activity_data.get("hourly_metabolic_rates", [])
+            activity_labels = activity_data.get("hourly_activities", [])
 
 
             if not met_rates or not activity_labels:
