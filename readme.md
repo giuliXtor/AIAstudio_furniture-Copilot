@@ -40,7 +40,7 @@ cd AIAstudio_furniture-Copilot
 
 # Open your terminal folder
 # Create a virtual environment:  python -m venv llmUIstudio-env
-# Activate your virtual environment: run ".\gradio-env\Scripts\activate"
+# Activate your virtual environment: run ".\llmUIstudio-env\Scripts\activate"
 
 # Then, install the required dependencies:
 # pip install -r requirements.txt
