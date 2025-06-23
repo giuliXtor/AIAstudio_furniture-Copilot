@@ -4,7 +4,7 @@ import sys              #UI adds-on
 import threading
 from server.config import *
 from llm_calls import *
-
+# from PIL import ImageQt # Fix: Import ImageQt directly
 from ui_pyqt import FlaskClientChatUI       #UI adds-on
 from PyQt5.QtWidgets import QApplication    #UI adds-on
 
@@ -22,7 +22,11 @@ def send_to_grasshopper():
         message = data["preferences_text"] # Expects a key named "message"
     
     print(f"Received from UI: {message}")
-    return jsonify({"response": f"Received message: {message}"})
+
+    result = extract_activities(message) #new line to call activities from UI
+    return jsonify({"response": f"Received message: {message}", "activities": result
+                    })  # Return a JSON response with the message and activities
+
 #UIend adds-on
 
 
