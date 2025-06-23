@@ -87,9 +87,10 @@ class FlaskClientChatUI(QMainWindow):
 
             # get activities and MET data from the response
             # ✅ NEW: Get activity + MET data
-            activities = response_data.get("activities", {})
-            met_rates = activities.get("hourly_metabolic_rates", [])
-            activity_labels = activities.get("hourly_activities", [])
+            activity_data = response_data.get("activities")
+            met_rates = activity_data.get("hourly_metabolic_rates")
+            activity_labels = activity_data.get("hourly_activities")
+
 
             if not met_rates or not activity_labels:
                 self.chat_display.append(
@@ -159,7 +160,7 @@ class FlaskClientChatUI(QMainWindow):
             plot_widget.plot(
                 x=hours,
                 y=y_vals,
-                pen=pg.mkPen(color=colors(i), width=2),
+                pen=pg.mkPen(color=colors(i), width=4),
                 name=act
             )
 
