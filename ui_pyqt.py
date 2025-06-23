@@ -52,8 +52,8 @@ class FlaskClientChatUI(QMainWindow):
         self.setCentralWidget(container)
 
     def send_message(self):
-        # message = self.input_field.text().strip() #to go to single line input field
-        message = self.input_field.toPlainText().strip() #to go to multi line input field
+        # message = self.input_field.text().strip() # uncomment to go to single line input field
+        message = self.input_field.toPlainText().strip() # uncomment to go to multi line input field
 
         if not message:
             self.chat_display.append("<span style='color: red;'>Please enter a message.</span>")
@@ -71,8 +71,12 @@ class FlaskClientChatUI(QMainWindow):
             )
             response_data = response.json()
 
+            # Optional debug log
+            print("Raw server response:", response_data)
+
             # Display the server's response in the chat window
-            self.chat_display.append(f"<b>Assistant:</b> {response_data}")
+            self.chat_display.append("<b>Assistant:</b> Please wait while I am processing your input and building your metabolic routine...")
+            # self.chat_display.append(f"<b>Assistant:</b> {response_data}") #changed to the above to avoid repeting the all message.
 
         except Exception as e:
             self.chat_display.append("<span style='color: red;'>Error connecting to the server.</span>")
