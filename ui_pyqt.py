@@ -180,27 +180,32 @@ class FlaskClientChatUI(QMainWindow):
         plot_widget.setYRange(0, 2.5)
         plot_widget.setXRange(0, 24)
 
-        for i, act in enumerate(unique_acts):
-            legend_added = False   # Initialize here, once per activity
-            # Find all hours where this activity happens
-            activity_hours = [idx for idx, a in enumerate(activities) if a == act]
+        legend = pg.LegendItem(offset=(10, 10))
+        legend.setParentItem(plot_widget.getPlotItem())
 
-            # Get continuous intervals to plot as steps
+        for i, act in enumerate(unique_acts):
+            activity_hours = [idx for idx, a in enumerate(activities) if a == act]
             intervals = self.get_continuous_intervals(activity_hours)
 
-            # Plot each continuous interval with step-like lines
+            # We will store a single reference line for the legend
+            legend_curve = None
+
             for (start, end) in intervals:
-                met_value = met_rates[start]  # Use MET at start hour of interval
+                met_value = met_rates[start]
                 x_vals, y_vals = self.create_step_arrays(start, end, met_value)
 
-                plot_widget.plot(
+                curve = plot_widget.plot(
                     x=x_vals,
                     y=y_vals,
                     pen=pg.mkPen(color=colors(i), width=4),
-                    #name=act if start == intervals[0][0] else ""  # show legend only once per activity
-                    name=act if not legend_added else ""
+                    name=None  # Don't trigger auto-legend
                 )
-                legend_added = True
+
+                if legend_curve is None:
+                    legend_curve = curve
+
+            # ✅ Add just one curve to legend (manually)
+            legend.addItem(legend_curve, act)
 
         self.plot_container_layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
