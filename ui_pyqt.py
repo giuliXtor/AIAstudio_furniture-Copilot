@@ -129,7 +129,7 @@ class FlaskClientChatUI(QMainWindow):
         except Exception as e:
             self.chat_display.append("<span style='color: red;'>Unexpected error occurred.</span>")
             print(f"Unhandled Exception: {e}")
-
+   
     def display_met_graph(self, met_rates, activities):
         print("📊 display_met_graph (pyqtgraph) was called!")
 
