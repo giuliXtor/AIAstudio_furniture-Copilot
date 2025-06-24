@@ -18,8 +18,8 @@ import numpy as np
 class FlaskClientChatUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("AI Assistant")
-        self.setGeometry(200, 200, 800, 800)
+        self.setWindowTitle("Furnish Assistant")
+        self.setGeometry(200, 200, 900, 900)
 
         # Main layout
         layout = QVBoxLayout()
@@ -27,6 +27,7 @@ class FlaskClientChatUI(QMainWindow):
         # Chat display area
         self.chat_display = QTextBrowser()
         self.chat_display.setReadOnly(True)
+        self.chat_display.setMinimumHeight(300)
         layout.addWidget(self.chat_display)
 
         # Add welcome message
@@ -53,6 +54,20 @@ class FlaskClientChatUI(QMainWindow):
         input_layout.addWidget(self.send_button)
 
         layout.addLayout(input_layout)
+
+        # Add a dedicated container for the plot to avoid messing up layout
+        self.plot_container = QWidget()
+        self.plot_container.setMinimumHeight(600)  # Reserve space always
+        self.plot_container.setMaximumHeight(600)  # Fix the height, so no resizing occurs
+        self.plot_container_layout = QVBoxLayout()
+        self.plot_container_layout.setContentsMargins(0,0,0,0)
+        self.plot_container.setLayout(self.plot_container_layout)
+        layout.addWidget(self.plot_container)
+
+        # ---- MODIFICATION: Add a blank placeholder widget to reserve plot space at startup ----
+        self.plot_placeholder = QWidget()
+        self.plot_container_layout.addWidget(self.plot_placeholder)
+        # ---------------------
 
         # Set central widget
         container = QWidget()
@@ -118,6 +133,13 @@ class FlaskClientChatUI(QMainWindow):
     def display_met_graph(self, met_rates, activities):
         print("📊 display_met_graph (pyqtgraph) was called!")
 
+        # Clear previous plots in plot container
+        for i in reversed(range(self.plot_container_layout.count())):
+            widget = self.plot_container_layout.itemAt(i).widget()
+            if widget:
+                self.plot_container_layout.removeWidget(widget)
+                widget.deleteLater()
+
         # Maintain activity order
         unique_acts = list(OrderedDict.fromkeys(activities))
         colors = pg.intColor  # Function to assign consistent colors
@@ -125,13 +147,13 @@ class FlaskClientChatUI(QMainWindow):
         hours = list(range(25))
         met_steps = met_rates + [met_rates[-1]]
 
-        # Optional: remove old plots
-        layout = self.centralWidget().layout()
-        for i in reversed(range(layout.count())):
-            item = layout.itemAt(i).widget()
-            if isinstance(item, PlotWidget):
-                layout.removeWidget(item)
-                item.deleteLater()
+        # # Optional: remove old plots
+        # layout = self.centralWidget().layout()
+        # for i in reversed(range(layout.count())):
+        #     item = layout.itemAt(i).widget()
+        #     if isinstance(item, PlotWidget):
+        #         layout.removeWidget(item)
+        #         item.deleteLater()
 
         # Create pyqtgraph widget
         plot_widget = PlotWidget()
@@ -148,6 +170,7 @@ class FlaskClientChatUI(QMainWindow):
         # Tick every 0.5 MET (Y axis)
         y_ticks = [(y, f"{y:.1f}") for y in np.arange(0, 3.0, 0.5)]
         plot_widget.getAxis("left").setTicks([y_ticks])
+
 
         for i, act in enumerate(unique_acts):
             mask = [a == act for a in activities]
@@ -167,7 +190,7 @@ class FlaskClientChatUI(QMainWindow):
         plot_widget.setYRange(0, 2.5)
         plot_widget.setXRange(0, 24)
 
-        layout.addWidget(plot_widget)
+        self.plot_container_layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
  
         # except Exception as e:  # Uncomment this block to handle all exceptions
