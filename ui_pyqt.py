@@ -180,8 +180,12 @@ class FlaskClientChatUI(QMainWindow):
         plot_widget.setYRange(0, 2.5)
         plot_widget.setXRange(0, 24)
 
-        legend = pg.LegendItem(offset=(10, 10))
+        legend = pg.LegendItem(offset=(0, 0))
         legend.setParentItem(plot_widget.getPlotItem())
+
+        # Anchor to top-right of the plot
+        legend.anchor((0, 0), (0, 0))  # (legend corner, plot corner)
+        legend.setOffset((80, 10))      # x=20px to the right of the plot's right edge
 
         for i, act in enumerate(unique_acts):
             activity_hours = [idx for idx, a in enumerate(activities) if a == act]
