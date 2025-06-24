@@ -130,24 +130,43 @@ class FlaskClientChatUI(QMainWindow):
             self.chat_display.append("<span style='color: red;'>Unexpected error occurred.</span>")
             print(f"Unhandled Exception: {e}")
    
+    def get_continuous_intervals(self, activity_hours):
+        intervals = []
+        if not activity_hours:
+            return intervals
+        start = activity_hours[0]
+        prev = start
+        for h in activity_hours[1:]:
+            if h != prev + 1:
+                intervals.append((start, prev))
+                start = h
+            prev = h
+        intervals.append((start, prev))
+        return intervals
+
+    def create_step_arrays(self, start, end, value):
+        x = []
+        y = []
+        for h in range(start, end + 1):
+            x.extend([h, h + 1])
+            y.extend([value, value])
+        return np.array(x), np.array(y)
+
+
+
     def display_met_graph(self, met_rates, activities):
         print("📊 display_met_graph (pyqtgraph) was called!")
 
-        # Clear previous plots in plot container
+    # Clear previous plots in plot container
         for i in reversed(range(self.plot_container_layout.count())):
             widget = self.plot_container_layout.itemAt(i).widget()
             if widget:
                 self.plot_container_layout.removeWidget(widget)
                 widget.deleteLater()
 
-        # Maintain activity order
         unique_acts = list(OrderedDict.fromkeys(activities))
-        colors = pg.intColor  # Function to assign consistent colors
+        colors = pg.intColor
 
-        hours = list(range(25))
-        met_steps = met_rates + [met_rates[-1]]
-
-        # Create pyqtgraph widget
         plot_widget = PlotWidget()
         plot_widget.setBackground("#121212")
         plot_widget.setTitle("Hourly Metabolic Rates", color="w", size="14pt")
@@ -155,33 +174,35 @@ class FlaskClientChatUI(QMainWindow):
         plot_widget.setLabel("bottom", "Hour")
         plot_widget.showGrid(x=True, y=True, alpha=0.3)
         plot_widget.addLegend(offset=(10, 10))
-
-        # Tick every hour (X axis)
         plot_widget.getAxis("bottom").setTicks([[(h, str(h)) for h in range(25)]])
-
-        # Tick every 0.5 MET (Y axis)
         y_ticks = [(y, f"{y:.1f}") for y in np.arange(0, 3.0, 0.5)]
         plot_widget.getAxis("left").setTicks([y_ticks])
-
-
-        for i, act in enumerate(unique_acts):
-            mask = [a == act for a in activities]
-            values = [m if msk else None for m, msk in zip(met_steps, mask + [mask[-1]])]
-
-            # pyqtgraph doesn't accept None, so set to np.nan
-            y_vals = np.array(values, dtype=np.float32)
-            y_vals[np.array([v is None for v in values])] = np.nan
-
-            plot_widget.plot(
-                x=hours,
-                y=y_vals,
-                pen=pg.mkPen(color=colors(i), width=4),
-                name=act
-            )
-
         plot_widget.setYRange(0, 2.5)
         plot_widget.setXRange(0, 24)
 
+        for i, act in enumerate(unique_acts):
+            legend_added = False   # Initialize here, once per activity
+            # Find all hours where this activity happens
+            activity_hours = [idx for idx, a in enumerate(activities) if a == act]
+
+            # Get continuous intervals to plot as steps
+            intervals = self.get_continuous_intervals(activity_hours)
+
+            # Plot each continuous interval with step-like lines
+            for (start, end) in intervals:
+                met_value = met_rates[start]  # Use MET at start hour of interval
+                x_vals, y_vals = self.create_step_arrays(start, end, met_value)
+
+                plot_widget.plot(
+                    x=x_vals,
+                    y=y_vals,
+                    pen=pg.mkPen(color=colors(i), width=4),
+                    #name=act if start == intervals[0][0] else ""  # show legend only once per activity
+                    name=act if not legend_added else ""
+                )
+                legend_added = True
+
         self.plot_container_layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
+
  
