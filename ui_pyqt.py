@@ -147,14 +147,6 @@ class FlaskClientChatUI(QMainWindow):
         hours = list(range(25))
         met_steps = met_rates + [met_rates[-1]]
 
-        # # Optional: remove old plots
-        # layout = self.centralWidget().layout()
-        # for i in reversed(range(layout.count())):
-        #     item = layout.itemAt(i).widget()
-        #     if isinstance(item, PlotWidget):
-        #         layout.removeWidget(item)
-        #         item.deleteLater()
-
         # Create pyqtgraph widget
         plot_widget = PlotWidget()
         plot_widget.setBackground("#121212")
@@ -193,6 +185,3 @@ class FlaskClientChatUI(QMainWindow):
         self.plot_container_layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
  
-        # except Exception as e:  # Uncomment this block to handle all exceptions
-        #     self.chat_display.append("<span style='color: red;'>Error connecting to the server.</span>")
-        #     print(f"Error: {e}")
