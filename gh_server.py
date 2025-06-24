@@ -23,9 +23,12 @@ def send_to_grasshopper():
     
     print(f"Received from UI: {message}")
 
-    result = extract_activities(message) #new line to call activities from UI
-    return jsonify({"response": f"Received message: {message}", "activities": result
-                    })  # Return a JSON response with the message and activities
+    result = extract_activities(message)
+    print("Extracted activities result:", result)  # ✅ Debug line here
+    
+    return jsonify({"response": f"Received message: {message}", 
+                    "activities": result
+    })  # Return a JSON response with the message and activities
 
 #UIend adds-on
 
