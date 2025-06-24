@@ -4,7 +4,6 @@ import sys              #UI adds-on
 import threading
 from server.config import *
 from llm_calls import *
-# from PIL import ImageQt # Fix: Import ImageQt directly
 from ui_pyqt import FlaskClientChatUI       #UI adds-on
 from PyQt5.QtWidgets import QApplication    #UI adds-on
 
