@@ -1,61 +1,57 @@
 from flask import Flask, request, jsonify
-
-import sys              #UI adds-on
+import sys              # UI add-ons
 import threading
 from server.config import *
 from llm_calls import *
-from ui_pyqt import FlaskClientChatUI       #UI adds-on
-from PyQt5.QtWidgets import QApplication    #UI adds-on
+from ui_pyqt import FlaskClientChatUI       # UI add-on
+from PyQt5.QtWidgets import QApplication    # UI add-on
 
 app = Flask(__name__)
-
 message = None
 
-#UIstart adds-on
+# -------------------- ROUTE 1: FROM UI --------------------
 @app.route('/send_to_grasshopper', methods=['POST', 'GET'])  
 def send_to_grasshopper():  
-    global message  # Use the global variable to store the message
+    global message
 
     if request.method == 'POST':
-        data = request.get_json()  # Retrieve the JSON object sent by the UI
-        message = data["preferences_text"] # Expects a key named "message"
-    
+        data = request.get_json()
+        message = data.get("preferences_text", "")
+
     print(f"Received from UI: {message}")
-
-    result = extract_activities(message)
-    print("Extracted activities result:", result)  # ✅ Debug line here
     
-    return jsonify({"response": f"Received message: {message}", 
-                    "activities": result
-    })  # Return a JSON response with the message and activities
+    result = extract_activities(message)
+    print("Extracted activities result:", result)
 
-#UIend adds-on
+    return jsonify({
+        "response": f"Received message: {message}", 
+        "activities": result
+    })
 
-
+# -------------------- ROUTE 2: FROM GRASSHOPPER --------------------
 @app.route('/extract_activities', methods=['POST'])
 def api_extract_activities():
     data = request.get_json()
     prompt = data.get("prompt", "")
-    
+
     result = extract_activities(prompt)
-    
-    return jsonify({"activities": result})
 
+    return jsonify({
+        "activities_json": result.get("activities_json", []),
+        "hourly_metabolic_rates": result.get("hourly_metabolic_rates", []),
+        "hourly_activities": result.get("hourly_activities", []),
+        "hourly_furniture": result.get("hourly_furniture", [])
+    })
 
-#UIstart adds-on
+# -------------------- FLASK THREAD + PYQT UI --------------------
 def run_flask():                        
-    app.run(debug=True, use_reloader=False)  # Run Flask server in a separate thread
+    app.run(debug=True, use_reloader=False)
 
 if __name__ == '__main__':
-#    app.run(debug=True) #commented out UI adds-on 
-
-    # Start Flask server in a separate thread
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
 
-    # Start PyQt application
     app = QApplication(sys.argv)
-    # app.setStyleSheet("QWidget { font-size: 14px; }") 
     app.setStyleSheet("""
     QWidget {
         background-color: #121212;
@@ -86,9 +82,8 @@ if __name__ == '__main__':
     QPushButton:hover {
         background-color: #3C3C3C;
     }
-""")
+    """)
 
     window = FlaskClientChatUI()
     window.show()
     sys.exit(app.exec_())
-#UIend UI adds-on
