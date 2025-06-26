@@ -2,7 +2,7 @@ everything you need to get the grasshopper file running.
 
 i have included the encoding but this isnt necessary to get it to run. 
 
-when in grasshopper:
+when in CopilotDeployment.gh:
 
 steps:
 0. you need xgboost installed to your rhino python. don't do #r, this will corrupt. install through pip in correct directory. 
