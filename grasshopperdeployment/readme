@@ -1,3 +1,13 @@
 everything you need to get the grasshopper file running.
 
 i have included the encoding but this isnt necessary to get it to run. 
+
+when in grasshopper:
+
+steps:
+0. you need xgboost installed to your rhino python. don't do #r, this will corrupt. install through pip in correct directory. 
+1. set correct files:
+i've circled everything that needs files in green.
+within mrt prediction python component and pmv prediction component you need to point to the model and scaler .pkls. you then need to point to the json.
+2. toggle run prediction and spin ur LLM and gh_server.py, toggle run for LLM in grasshopper
+3. enter query or try the ones already there, slider above will change the grid you're viewing
