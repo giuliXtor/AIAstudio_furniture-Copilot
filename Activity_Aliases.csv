@@ -1,40 +1,42 @@
 user_phrase,base_activity,furniture,metabolic_rate
-watch tv,sitting,sofa,1.0
-watch netflix,sitting,sofa,1.0
-eat a snack,sitting,sofa,1.0
-have a coffee,sitting,sofa,1.0
-talk with friends,sitting,sofa,1.0
-play video games,sitting,sofa,1.0
-wait,sitting,sofa,1.0
-chat,sitting,sofa,1.0
+watch tv,sitting,sofa,1
+watch netflix,sitting,sofa,1
+eat a snack,sitting,sofa,1
+have a coffee,sitting,sofa,1
+talk with friends,sitting,sofa,1
+play video games,sitting,sofa,1
+wait,sitting,sofa,1
+chat,sitting,sofa,1
 scroll on phone,reclining,sofa,0.8
 rest,reclining,sofa,0.8
 take a break,reclining,sofa,0.8
 listen to music,reclining,sofa,0.8
 nap,reclining,sofa,0.8
-read a book,sitting,armchair,1.0
-read magazine,sitting,armchair,1.0
-read newspaper,sitting,armchair,1.0
+read a book,sitting,armchair,1
+read magazine,sitting,armchair,1
+read newspaper,sitting,armchair,1
 relax with a book,reclining,armchair,0.8
 work on laptop,working,desk-chair,1.3
 study,working,desk-chair,1.3
 write notes,working,desk-chair,1.3
 do homework,working,desk-chair,1.3
-write in journal,sitting,desk-chair,1.0
-draw,sitting,desk-chair,1.0
-sketch,sitting,desk-chair,1.0
-paint,sitting,desk-chair,1.0
+write in journal,sitting,desk-chair,1
+draw,sitting,desk-chair,1
+sketch,sitting,desk-chair,1
+paint,sitting,desk-chair,1
 organize shelves,standing,shelving,1.2
 put things away,standing,shelving,1.2
 clean,standing,shelving,1.2
 get a book,standing,bookcase-storage,1.2
 store books,standing,bookcase-storage,1.2
-eat dinner,sitting,dining-table,1.0
-eat lunch,sitting,dining-table,1.0
-eat breakfast,sitting,dining-table,1.0
-have a meal,sitting,dining-table,1.0
-family dinner,sitting,dining-table,1.0
+eat dinner,sitting,dining-table,1
+eat lunch,sitting,dining-table,1
+eat breakfast,sitting,dining-table,1
+have a meal,sitting,dining-table,1
+family dinner,sitting,dining-table,1
 set the table,standing,dining-table,1.2
 stretch,standing,shelving,1.2
 stand and talk,standing,shelving,1.2
 wait while standing,standing,shelving,1.2
+sleep,sleeping,bed,0.7
+yoga,yoga,yoga-mat,2.5

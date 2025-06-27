@@ -18,7 +18,7 @@ import numpy as np
 class FlaskClientChatUI(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Furnish Assistant")
+        self.setWindowTitle("HaBiCoM: Furnishing a Comfortable Habitat")
         self.setGeometry(200, 200, 900, 900)
 
         # Main layout
@@ -165,11 +165,18 @@ class FlaskClientChatUI(QMainWindow):
                 widget.deleteLater()
 
         unique_acts = list(OrderedDict.fromkeys(activities))
-        colors = pg.intColor
+        #### colors = pg.intColor
+        color_list = [
+            "#F94144", "#DC9D7B", "#F8961E", "#F9C74F", "#90BE6D",
+            "#43AA8B", "#577590", "#277DA1", "#4D908E", "#9A031E",
+            "#5F0F40", "#0F4C5C", "#1B9AAA", "#C08497", "#BE5A03",
+            "#8AC926", "#1982C4", "#8D7DA4", "#D00000", "#3D348B",
+            "#FFB400", "#8390FA", "#A1BAE3", "#721FE7"
+        ]
 
         plot_widget = PlotWidget()
         plot_widget.setBackground("#121212")
-        plot_widget.setTitle("Hourly Metabolic Rates", color="w", size="14pt")
+        plot_widget.setTitle("Daily metabolic routine", color="w", size="14pt")
         plot_widget.setLabel("left", "MET")
         plot_widget.setLabel("bottom", "Hour")
         plot_widget.showGrid(x=True, y=True, alpha=0.3)
@@ -193,6 +200,7 @@ class FlaskClientChatUI(QMainWindow):
 
             # We will store a single reference line for the legend
             legend_curve = None
+            color = color_list[i % len(color_list)] ####Added
 
             for (start, end) in intervals:
                 met_value = met_rates[start]
@@ -201,7 +209,8 @@ class FlaskClientChatUI(QMainWindow):
                 curve = plot_widget.plot(
                     x=x_vals,
                     y=y_vals,
-                    pen=pg.mkPen(color=colors(i), width=4),
+                    #### pen=pg.mkPen(color=colors(i), width=4),
+                    pen=pg.mkPen(color=color, width=4),
                     name=None  # Don't trigger auto-legend
                 )
 
@@ -213,5 +222,3 @@ class FlaskClientChatUI(QMainWindow):
 
         self.plot_container_layout.addWidget(plot_widget)
         print("📎 PlotWidget added to layout.")
-
- 
